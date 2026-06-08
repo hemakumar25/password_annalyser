@@ -9,7 +9,6 @@ import { errorHandler } from './middleware/errorMiddleware.js';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
 
 connectDB();
 
@@ -26,6 +25,11 @@ app.use('/api/analysis', analysisRoutes);
 
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`Backend listening on http://localhost:${port}`);
-});
+if (!process.env.VERCEL) {
+  const port = process.env.PORT || 5000;
+  app.listen(port, () => {
+    console.log(`Backend listening on http://localhost:${port}`);
+  });
+}
+
+export default app;
